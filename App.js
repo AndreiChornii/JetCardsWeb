@@ -1,13 +1,14 @@
 import React, { useReducer, useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Button, TouchableOpacity, Image } from 'react-native';
 import Auth from '../JetCardsWeb/components/Auth'
+import { useAsync } from 'react-async'
 
 const titleText = "JET CARDS Service - Sign in";
-
+let isValid = 0;
 const reducer = (state, action) => {
   // console.log(action.login);
   // console.log(action.password);
-  let isValid = 0;
+  
   fetch(`https://www.jetcs.co/api/GetAPIKey/${action.login}`,
     {
       method: 'POST',
@@ -41,10 +42,16 @@ const LoginScreen = () => {
 
   const [textlogin, setLogin] = useState('');
   const [textPassword, setPassword] = useState('');
+  
+  // let d = new Date();
+  // let d2 = null;
+  // do{
+  //   d2 = new Date();
+  // } while (d2 - d < 3000);
 
   console.log(login);
   console.log(password);
-  console.log(rez);
+  console.log(isValid);
 
   return <View style={styles.container}>
     <View style={styles.middle}>
@@ -85,6 +92,7 @@ const LoginScreen = () => {
           <Auth
             onLogin={() => dispatch({ login: textlogin, password: textPassword })}
             color="lightgrey"
+            rez = {rez}
           />
         </View>
         <TouchableOpacity style={styles.appButtonContainer}>
