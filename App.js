@@ -1,19 +1,50 @@
-import React, { useReducer } from 'react';
-import { View, Text, StyleSheet,TextInput,Button,TouchableOpacity,Image } from 'react-native';
+import React, { useReducer, useState } from 'react';
+import { View, Text, StyleSheet, TextInput, Button, TouchableOpacity, Image } from 'react-native';
 import Auth from '../JetCardsWeb/components/Auth'
 
 const titleText = "JET CARDS Service - Sign in";
 
 const reducer = (state, action) => {
-    return {...state , login: action.login, password: action.password};
+  // console.log(action.login);
+  // console.log(action.password);
+  let isValid = 0;
+  fetch(`https://www.jetcs.co/api/GetAPIKey/${action.login}`,
+    {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: action.password
+    })
+    .then((response) => response.json())
+    .then((json) => {
+      console.log('Logged in successfull');
+      // console.log(json.APIKey)
+      // alert('Logged in successfull');
+      isValid = 1;
+    })
+    .catch((error) => {
+      console.log('Wrong login/password');
+      // console.error(error);
+      // alert('Wrong login/password');
+      isValid = 0;
+    });
+  return isValid
+    ? { ...state, login: action.login, password: action.password, rez: 1 }
+    : { ...state, login: action.login, password: action.password, rez: 0 };
 };
 
 const LoginScreen = () => {
-  const [state, dispatch] = useReducer(reducer, { login: '', password: '' });
-  const { login, password } = state;
+  const [state, dispatch] = useReducer(reducer, { login: '', password: '', rez: 0 });
+  const { login, password, rez } = state;
+
+  const [textlogin, setLogin] = useState('');
+  const [textPassword, setPassword] = useState('');
 
   console.log(login);
   console.log(password);
+  console.log(rez);
 
   return <View style={styles.container}>
     <View style={styles.middle}>
@@ -26,15 +57,14 @@ const LoginScreen = () => {
         <View style={styles.contentelement}>
           <Image
             style={styles.image}
-
             source={require("./img/smile.png")}
           />
 
           <TextInput
             style={styles.input}
             placeholder="Login"
+            onChangeText={text => setLogin(text)}
           />
-
 
         </View>
         <View style={styles.contentelement}>
@@ -47,13 +77,14 @@ const LoginScreen = () => {
             style={styles.input}
             placeholder="Password"
             secureTextEntry={true}
+            onChangeText={text => setPassword(text)}
           />
 
         </View>
         <View style={styles.contentelement}>
           <Auth
-              onLogin={() => dispatch({ login: 'llll', password: 'ppppp' })}
-              color="lightgrey"
+            onLogin={() => dispatch({ login: textlogin, password: textPassword })}
+            color="lightgrey"
           />
         </View>
         <TouchableOpacity style={styles.appButtonContainer}>
