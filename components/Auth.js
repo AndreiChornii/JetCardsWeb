@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, FlatList, Text, View, Button, StyleSheet, TouchableOpacity } from 'react-native';
 
 const Auth = ({ isVisible, rez, color, onLogin }) => {
-    let output_successfull = <View><Button onPress={() => onLogin()} title={`SIGN IN ${rez} ${isVisible}`} color={color} /><Text style={styles.authSucced}>Logged in successfull</Text></View>
+    let output_successfull = <View><Button onPress={() => onLogin()} title={`SIGN IN`} color={color} /><Text style={styles.authSucced}>Logged in successfull</Text></View>
     let output_error = <View>
-        <Button onPress={() => onLogin()} title={`SIGN IN ${rez} ${isVisible}`} color={color} />
+        <Button onPress={() => onLogin()} title={`SIGN IN`} color={color} />
         <Text style={styles.onFall}>Wrong login/password</Text>
         <TouchableOpacity><Text style={styles.appButtonText}>{"Forgot your Login or Password?"}</Text></TouchableOpacity>
     </View>
-    let only_button = <View><Button onPress={() => onLogin()} title={`SIGN IN ${rez} ${isVisible}`} color={color} /></View>
+    let only_button = <View><Button onPress={() => onLogin()} title={`SIGN IN`} color={color} /></View>
 
     if (isVisible) {
         if (rez) return output_successfull;
