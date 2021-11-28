@@ -95,7 +95,6 @@ const LoginScreen = () => {
           <Auth
             onLogin={ () => { 
               dispatch({ login: textlogin, password: textPassword }) 
-              dispatch({ login: textlogin, password: textPassword }) 
             } }
             color="lightgrey"
             rez={rez}
