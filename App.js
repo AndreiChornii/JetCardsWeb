@@ -1,3 +1,5 @@
+<script src="http://localhost:8097"></script>
+
 import React, { useReducer, useState } from 'react';
 import { View, Text, StyleSheet, TextInput, Button, TouchableOpacity, Image } from 'react-native';
 import Auth from '../JetCardsWeb/components/Auth'
@@ -43,11 +45,7 @@ const reducer = (state, action) => {
 const LoginScreen = () => {
   const [state, dispatch] = useReducer(reducer, { login: '', password: '', rez: 0, isVisible: 0 });
 
-  let d = new Date();
-  let d2 = null;
-  do {
-    d2 = new Date();
-  } while (d2 - d < 3000);
+
 
   const { login, password, rez, isVisible } = state;
 
@@ -95,15 +93,16 @@ const LoginScreen = () => {
         </View>
         <View style={styles.contentelement}>
           <Auth
-            onLogin={() => dispatch({ login: textlogin, password: textPassword })}
+            onLogin={ () => { 
+              dispatch({ login: textlogin, password: textPassword }) 
+              dispatch({ login: textlogin, password: textPassword }) 
+            } }
             color="lightgrey"
             rez={rez}
             isVisible={isVisible}
           />
         </View>
-        <TouchableOpacity style={styles.appButtonContainer}>
-          <Text style={styles.appButtonText}>{"Forgot your Login or Password?"}</Text>
-        </TouchableOpacity>
+
       </View>
     </View>
     <View>
@@ -175,20 +174,6 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     // borderColor: 'brown',
     alignSelf: "center"
-  },
-  appButtonContainer: {
-    // elevation: 8,
-    backgroundColor: "#ffffff",
-    borderRadius: 5,
-    // paddingVertical: 10,
-    // paddingHorizontal: 12
-  },
-  appButtonText: {
-    fontSize: 12,
-    color: "#de2768",
-    // fontWeight: "bold",
-    alignSelf: "center",
-    // textTransform: "uppercase"
   }
 });
 
