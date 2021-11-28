@@ -5,11 +5,11 @@ import { useAsync } from 'react-async'
 
 const titleText = "JET CARDS Service - Sign in";
 let isValid = 0;
-const reducer = (state, action) => {
+const reducer = async (state, action) => {
   // console.log(action.login);
   // console.log(action.password);
   
-  fetch(`https://www.jetcs.co/api/GetAPIKey/${action.login}`,
+  const response = await fetch(`https://www.jetcs.co/api/GetAPIKey/${action.login}`,
     {
       method: 'POST',
       headers: {
@@ -17,37 +17,28 @@ const reducer = (state, action) => {
         'Content-Type': 'application/json'
       },
       body: action.password
-    })
-    .then((response) => response.json())
-    .then((json) => {
-      console.log('Logged in successfull');
-      // console.log(json.APIKey)
-      // alert('Logged in successfull');
-      isValid = 1;
-    })
-    .catch((error) => {
-      console.log('Wrong login/password');
-      // console.error(error);
-      // alert('Wrong login/password');
-      isValid = 0;
     });
-  return isValid
-    ? { ...state, login: action.login, password: action.password, rez: 1 }
-    : { ...state, login: action.login, password: action.password, rez: 0 };
+    const ApiKey = await response.json();
+    return ApiKey;
 };
+
+reducer().then(ApiKey => {
+  console.log(ApiKey);
+});
 
 const LoginScreen = () => {
   const [state, dispatch] = useReducer(reducer, { login: '', password: '', rez: 0 });
+    
+  let d = new Date();
+  let d2 = null;
+  do{
+    d2 = new Date();
+  } while (d2 - d < 3000);
+
   const { login, password, rez } = state;
 
   const [textlogin, setLogin] = useState('');
   const [textPassword, setPassword] = useState('');
-  
-  // let d = new Date();
-  // let d2 = null;
-  // do{
-  //   d2 = new Date();
-  // } while (d2 - d < 3000);
 
   console.log(login);
   console.log(password);
